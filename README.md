@@ -1,6 +1,7 @@
 # FabricScreenLayers
 
-Provides utility to layer minecraft gui screens ontop of one another. 
+FabricScreenLayers is modelled after Minecraft Forge's GuiScreenLayering logic using mixins.
+Provides utility to layer minecraft gui screens on top of one another. 
 
 Examples Usages: 
 
