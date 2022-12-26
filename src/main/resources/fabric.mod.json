@@ -4,7 +4,9 @@
   "version": "${version}",
   "name": "FabricScreenLayers",
   "description": "",
-  "authors": ["Mysticdrew"],
+  "authors": [
+    "Mysticdrew"
+  ],
   "contact": {
     "website": "https://www.curseforge.com/minecraft/mc-mods/fabric-screen-layers"
   },
@@ -24,14 +26,9 @@
       "links": {
         "modmenu.discord": "https://discord.gg/eP8gE69"
       },
-      "badges": [ "library" ],
-      "parent": {
-        "id": "fabric-screen-layers",
-        "name": "FabricScreenLayers",
-        "description": "Screen Layers",
-        "icon": "assets/fsl-icon.png",
-        "badges": [ "library" ]
-      }
+      "badges": [
+        "library"
+      ]
     }
   }
 }
