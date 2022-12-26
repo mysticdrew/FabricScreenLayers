@@ -8,7 +8,8 @@
     "Mysticdrew"
   ],
   "contact": {
-    "website": "https://www.curseforge.com/minecraft/mc-mods/fabric-screen-layers"
+    "website": "https://www.curseforge.com/minecraft/mc-mods/fabric-screen-layers",
+    "github": "https://github.com/mysticdrew/FabricScreenLayers/"
   },
   "license": "MIT",
   "icon": "assets/fsl-icon.png",
@@ -24,7 +25,8 @@
   "custom": {
     "modmenu": {
       "links": {
-        "modmenu.discord": "https://discord.gg/eP8gE69"
+        "modmenu.discord": "https://discord.gg/eP8gE69",
+        "github": "https://github.com/mysticdrew/FabricScreenLayers/"
       },
       "badges": [
         "library"
