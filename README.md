@@ -3,6 +3,10 @@
 FabricScreenLayers is modelled after Minecraft Forge's GuiScreenLayering logic using mixins.
 Provides utility to layer minecraft gui screens on top of one another. 
 
+#### Downloads:
+- [CurseForge][1]
+- [Modrinth][2]
+
 Examples Usages: 
 
 To add a screen on top of another screen:
@@ -31,4 +35,7 @@ posestack.setIdentity();
 posestack.translate(0.0D, 0.0D, 1000.0F - ScreenLayerManager.getFarPlane());
 ```
 
+[1]: https://www.curseforge.com/minecraft/mc-mods/fabric-screen-layers
+
+[2]: https://modrinth.com/mod/fabric-screen-layers
 
