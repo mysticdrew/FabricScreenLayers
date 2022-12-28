@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "id": "examplemod",
+  "version": "1.0.0+1.19.3",
+
+  "name": "Fabric Screen Layers Example",
+  "description": "Example for Fabric Screen Layers",
+  "authors": [
+    "Mysticdrew"
+  ],
+  "contact": {
+    "discord": "https://discord.gg/eP8gE69"
+  },
+  "license": "MIT",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "example.mod.ExampleMod"
+    ]
+  },
+  "custom": {
+    "modmenu": {
+      "links": {
+        "modmenu.discord": "https://discord.gg/eP8gE69",
+        "github": "https://github.com/mysticdrew/FabricScreenLayers/"
+      }
+    }
+  },
+  "depends": {
+    "fabric-screen-layers" : ">=1.0.0",
+    "fabricloader": ">=0.11.3",
+    "fabric": "*",
+    "minecraft": "1.19.x",
+    "java": ">=17"
+  }
+}
