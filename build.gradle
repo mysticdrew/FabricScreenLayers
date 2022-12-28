@@ -4,7 +4,6 @@ buildscript {
         maven {
             url "https://plugins.gradle.org/m2/"
         }
-
     }
 
     dependencies {
@@ -29,6 +28,20 @@ group = project.group_id
 archivesBaseName = "${project.mod_id}"
 
 repositories {
+    maven {
+        url = 'https://maven.parchmentmc.org'
+    }
+}
+/* Use the same compile and runtime classpath in the Example Mod */
+sourceSets {
+    examplemod {
+        compileClasspath += main.compileClasspath
+        runtimeClasspath += main.runtimeClasspath
+    }
+}
+
+configurations {
+    examplemodImplementation.extendsFrom implementation
 }
 
 dependencies {
@@ -41,6 +54,8 @@ dependencies {
     }
     modImplementation "net.fabricmc:fabric-loader:${project.fabric_loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+
+    examplemodImplementation sourceSets.main.output
 }
 
 processResources {
@@ -66,6 +81,7 @@ java {
         toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
     }
     withSourcesJar()
+    withJavadocJar()
 }
 
 jar {
@@ -76,10 +92,20 @@ jar {
                 "Specification-Vendor"    : project.group_id,
                 "Specification-Version"   : "1", // We are version 1 of ourselves
                 "Implementation-Title"    : project.name,
-                "Implementation-Version"  : "${version}",
+                "Implementation-Version"  : "${archiveVersion}",
                 "Implementation-Vendor"   : project.group_id,
                 "Implementation-Timestamp": getDate()
         ])
+    }
+}
+loom {
+    runs {// Example of creating a basic run config for tests
+        exampleMod {
+            // Copies settings from another run configuration.
+            inherit client
+            configName = "ExampleMod Client"
+            source = sourceSets.examplemod
+        }
     }
 }
 
@@ -130,7 +156,7 @@ modrinth {
     versionType = release_type
     uploadFile = remapJar
     gameVersions = ["${project.minecraft_version}"]
-    loaders = ["fabric","quilt"]
+    loaders = ["fabric", "quilt"]
     changelog = file('/build/doc/changelog.html').exists() ? file('/build/doc/changelog.html').text : null
 }
 

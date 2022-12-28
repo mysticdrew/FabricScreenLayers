@@ -35,6 +35,13 @@ posestack.setIdentity();
 posestack.translate(0.0D, 0.0D, 1000.0F - ScreenLayerManager.getFarPlane());
 ```
 
+ExampleMod Testing
+- Clone or download the repo.
+- Import build.gradle
+- Run `ExampleMod Client` run config. 
+- Press N to add the first screen
+- Continue pressing N to add more, or click the buttons.
+
 [1]: https://www.curseforge.com/minecraft/mc-mods/fabric-screen-layers
 
 [2]: https://modrinth.com/mod/fabric-screen-layers
