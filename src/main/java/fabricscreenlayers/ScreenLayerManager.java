@@ -21,10 +21,14 @@ public class ScreenLayerManager
         if (minecraft.screen != null)
         {
             SCREENS.push(minecraft.screen);
+            minecraft.screen = Objects.requireNonNull(screen);
+            screen.init(minecraft, minecraft.getWindow().getGuiScaledWidth(), minecraft.getWindow().getGuiScaledHeight());
+            minecraft.getNarrator().sayNow(screen.getNarrationMessage());
         }
-        minecraft.screen = Objects.requireNonNull(screen);
-        screen.init(minecraft, minecraft.getWindow().getGuiScaledWidth(), minecraft.getWindow().getGuiScaledHeight());
-        minecraft.getNarrator().sayNow(screen.getNarrationMessage());
+        else
+        {
+            minecraft.setScreen(screen);
+        }
     }
 
     /**
@@ -71,7 +75,8 @@ public class ScreenLayerManager
 
 
     /**
-     * Gets the current layer count.
+     * Returns the current layers on top of the bottom screen. The first screen is not a layer.
+     * This means, if only one screen is displayed it will return 0.
      *
      * @return - The count.
      */
