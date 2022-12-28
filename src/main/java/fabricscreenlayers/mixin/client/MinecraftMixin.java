@@ -10,6 +10,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import static fabricscreenlayers.ScreenLayerManager.SCREENS;
 import static org.objectweb.asm.Opcodes.PUTFIELD;
 
 
@@ -23,12 +24,19 @@ public class MinecraftMixin
     public void fabricscreenlayers_resizeDisplay(CallbackInfo info)
     {
         Minecraft minecraft = Minecraft.getInstance();
-        ScreenLayerManager.resizeLayers(minecraft.getWindow().getGuiScaledWidth(), minecraft.getWindow().getGuiScaledHeight());
+
+        resizeLayers(minecraft.getWindow().getGuiScaledWidth(), minecraft.getWindow().getGuiScaledHeight());
     }
 
     @Inject(method = "setScreen", at = @At(value = "FIELD", target = "Lnet/minecraft/client/Minecraft;screen:Lnet/minecraft/client/gui/screens/Screen;", opcode = PUTFIELD, shift = At.Shift.BEFORE))
     public void fabricscreenlayers_setScreen(Screen screen, CallbackInfo info)
     {
         ScreenLayerManager.clearLayers();
+    }
+
+    void resizeLayers(int width, int height)
+    {
+        Minecraft minecraft = Minecraft.getInstance();
+        SCREENS.forEach(screen -> screen.resize(minecraft, width, height));
     }
 }
