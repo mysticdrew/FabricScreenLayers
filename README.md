@@ -3,6 +3,20 @@
 FabricScreenLayers is modelled after Minecraft Forge's GuiScreenLayering logic using mixins.
 Provides utility to layer minecraft gui screens on top of one another. 
 
+### Add to project:
+```
+repositories {
+    maven {
+        name = "JourneyMap (Public)"
+        url = "https://jm.gserv.me/repository/maven-public/"
+    }
+}
+dependencies {
+    modImplementation 'net.mysticdrew:fabric-screen-layers:1.0.1+1.19.3'
+}
+```
+
+
 #### Downloads:
 - [CurseForge][1]
 - [Modrinth][2]
