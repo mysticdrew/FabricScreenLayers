@@ -175,3 +175,26 @@ def getDate() {
     def formattedDate = date.format(project.dateFormat)
     return formattedDate
 }
+
+publishing {
+    repositories {
+        maven {
+            name = "FabricScreenLayers"
+            url = uri("https://jm.gserv.me/repository/maven-releases/")
+
+            credentials {
+                username = project.findProperty("deploy.user") ?: System.getenv("DEPLOY_USER")
+                password = project.findProperty("deploy.password") ?: System.getenv("DEPLOY_PASSWORD")
+            }
+        }
+    }
+
+    publications {
+        mavenJava(MavenPublication) {
+            groupId project.group
+            artifactId project.archivesBaseName
+            version project.version
+            artifact remapJar
+        }
+    }
+}
