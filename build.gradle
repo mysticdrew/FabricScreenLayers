@@ -7,7 +7,6 @@ buildscript {
     }
 
     dependencies {
-        classpath 'gradle.plugin.com.github.johnrengelman:shadow:7.1.2'
         classpath group: 'com.modrinth.minotaur', name: 'Minotaur', version: '2.+'
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.+'
     }
@@ -17,7 +16,7 @@ plugins {
     id 'fabric-loom' version '1.0-SNAPSHOT'
     id 'com.matthewprenger.cursegradle' version '1.4.0'
 }
-apply plugin: 'com.github.johnrengelman.shadow'
+
 apply plugin: "com.modrinth.minotaur"
 apply plugin: 'maven-publish'
 apply plugin: 'signing'
@@ -194,7 +193,7 @@ publishing {
             groupId project.group
             artifactId project.archivesBaseName
             version project.version
-            artifact remapJar
+            from components.java
         }
     }
 }
