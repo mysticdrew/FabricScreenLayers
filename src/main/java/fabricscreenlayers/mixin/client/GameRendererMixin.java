@@ -4,6 +4,7 @@ import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import fabricscreenlayers.ScreenLayerManager;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import org.joml.Matrix4f;
@@ -82,6 +83,13 @@ public class GameRendererMixin
     Matrix4f render4fTranslate()
     {
         Window window = Minecraft.getInstance().getWindow();
-        return new Matrix4f().ortho(0.0f, (float) ((double) window.getWidth() / window.getGuiScale()), (float) ((double) window.getHeight() / window.getGuiScale()), 0.0f, 1000.0f, ScreenLayerManager.getFarPlane());
+        return new Matrix4f()
+                .ortho(0.0f,
+                        (float) ((double) window.getWidth() / window.getGuiScale()),
+                        (float) ((double) window.getHeight() / window.getGuiScale()),
+                        0.0f,
+                        1000.0f,
+                        ScreenLayerManager.getFarPlane(),
+                        FabricLoader.getInstance().isModLoaded("vulkanmod")); // GL needs false, Vulkan needs true. If mod is loaded, supply true.
     }
 }
