@@ -7,7 +7,6 @@ Provides utility to layer minecraft gui screens on top of one another.
 ```
 repositories {
     maven {
-        name = "JourneyMap (Public)"
         url = "https://jm.gserv.me/repository/maven-public/"
     }
 }
