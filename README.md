@@ -11,7 +11,7 @@ repositories {
     }
 }
 dependencies {
-    modImplementation 'net.mysticdrew:fabric-screen-layers:1.0.1+1.19.3'
+    modImplementation 'mysticdrew:fabric-screen-layers:1.0.1+1.19.3'
 }
 ```
 
