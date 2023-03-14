@@ -121,7 +121,6 @@ public class ExampleScreen extends Screen
     public static void drawRectangle(PoseStack poseStack, float x, float y, float width, double height)
     {
         RenderSystem.enableBlend();
-        RenderSystem.disableTexture();
         RenderSystem.defaultBlendFunc();
         BufferBuilder bufferBuilder = Tesselator.getInstance().getBuilder();
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
@@ -135,7 +134,6 @@ public class ExampleScreen extends Screen
         BufferUploader.drawWithShader(bufferBuilder.end());
         RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
         RenderSystem.disableBlend();
-        RenderSystem.enableTexture();
     }
 
     public void sizeDisplay(double width, double height)
