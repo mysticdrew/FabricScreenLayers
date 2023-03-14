@@ -15,7 +15,7 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
-import org.joml.Matrix4f;
+import com.mojang.math.Matrix4f;
 
 import static org.lwjgl.opengl.GL11C.GL_DEPTH_BUFFER_BIT;
 
@@ -39,26 +39,19 @@ public class ExampleScreen extends Screen
     public void init()
     {
 
-        addScreenButton = Button.builder(Component.literal("Add Screen"), (button) ->
-                ScreenLayerManager.pushLayer(new ExampleScreen(ScreenLayerManager.getScreenLayerCount() + 1))).build();
+        addScreenButton = new Button(0, this.height - 40, 100, 20, Component.literal("Add Screen"), (button) ->
+                ScreenLayerManager.pushLayer(new ExampleScreen(ScreenLayerManager.getScreenLayerCount() + 1)));
 
-        closeScreenButton = Button.builder(Component.literal("Close Screen"), (button) -> ScreenLayerManager.popLayer()).build();
+        closeScreenButton = new Button((this.width / 2) - 50, this.height - 40, 100, 20, Component.literal("Close Screen"), (button) -> ScreenLayerManager.popLayer());
 
-        closeAllScreensButton = Button.builder(Component.literal("Clear All Layers"), (button) -> ScreenLayerManager.clearLayers()).build();
+        closeAllScreensButton = new Button(this.width - 100, this.height - 40, 100, 20, Component.literal("Clear All Layers"), (button) -> ScreenLayerManager.clearLayers());
 
-        this.addRenderableWidget(positionWidget(addScreenButton, 0, this.height - 40));
-        this.addRenderableWidget(positionWidget(closeScreenButton, (this.width / 2) - 50, this.height - 40));
-        this.addRenderableWidget(positionWidget(closeAllScreensButton, this.width - 100, this.height - 40));
+        this.addRenderableWidget(addScreenButton);
+        this.addRenderableWidget(closeScreenButton);
+        this.addRenderableWidget(closeAllScreensButton);
 
     }
 
-    private Button positionWidget(Button button, int x, int y)
-    {
-        button.setX(x);
-        button.setY(y);
-        button.setWidth(100);
-        return button;
-    }
 
     @Override
     public void render(PoseStack poseStack, int x, int y, float partialTicks)
@@ -143,7 +136,7 @@ public class ExampleScreen extends Screen
         if (this.width > 0 && this.height > 0)
         {
             RenderSystem.clear(GL_DEPTH_BUFFER_BIT, Minecraft.ON_OSX);
-            Matrix4f matrix4f = new Matrix4f().setOrtho(0.0F, (float) width, (float) height, 0.0F, 100.0F, ScreenLayerManager.getFarPlane());
+            Matrix4f matrix4f = Matrix4f.orthographic(0.0F, (float) width, 0.0F, (float) height, 100.0F, ScreenLayerManager.getFarPlane());
             RenderSystem.setProjectionMatrix(matrix4f);
             PoseStack posestack = RenderSystem.getModelViewStack();
             posestack.setIdentity();

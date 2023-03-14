@@ -7,7 +7,7 @@ import fabricscreenlayers.ScreenLayerManager;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
-import org.joml.Matrix4f;
+import com.mojang.math.Matrix4f;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -24,7 +24,7 @@ public class GameRendererMixin
 
     @Redirect(method = "render",
             at = @At(value = "INVOKE",
-                    target = "Lcom/mojang/blaze3d/systems/RenderSystem;setProjectionMatrix(Lorg/joml/Matrix4f;)V"))
+                    target = "Lcom/mojang/blaze3d/systems/RenderSystem;setProjectionMatrix(Lcom/mojang/math/Matrix4f;)V"))
     public void fabricscreenlayers_render4f(Matrix4f matrix4f)
     {
         RenderSystem.setProjectionMatrix(render4fTranslate());
@@ -32,15 +32,15 @@ public class GameRendererMixin
 
     @Redirect(method = "render",
             at = @At(value = "INVOKE",
-                    target = "Lcom/mojang/blaze3d/vertex/PoseStack;translate(FFF)V"))
-    public void fabricscreenlayers_renderTranslate(PoseStack poseStack, float f, float g, float h)
+                    target = "Lcom/mojang/blaze3d/vertex/PoseStack;translate(DDD)V"))
+    public void fabricscreenlayers_renderTranslate(PoseStack poseStack, double f, double g, double h)
     {
         renderTranslate(poseStack);
     }
 
     @ModifyVariable(method = "render",
             at = @At(value = "INVOKE",
-                    target = "Lnet/minecraft/client/gui/screens/Screen;renderWithTooltip(Lcom/mojang/blaze3d/vertex/PoseStack;IIF)V",
+                    target = "Lnet/minecraft/client/gui/screens/Screen;render(Lcom/mojang/blaze3d/vertex/PoseStack;IIF)V",
                     shift = At.Shift.BEFORE),
             ordinal = 1)
     public PoseStack fabricscreenlayers_renderDrawScreenPre(PoseStack poseStack)
@@ -53,7 +53,7 @@ public class GameRendererMixin
 
     @Inject(method = "render",
             at = @At(value = "INVOKE",
-                    target = "Lnet/minecraft/client/gui/screens/Screen;renderWithTooltip(Lcom/mojang/blaze3d/vertex/PoseStack;IIF)V",
+                    target = "Lnet/minecraft/client/gui/screens/Screen;render(Lcom/mojang/blaze3d/vertex/PoseStack;IIF)V",
                     shift = At.Shift.AFTER))
     public void fabricscreenlayers_renderDrawScreenPost(float f, long l, boolean bl, CallbackInfo ci)
     {
@@ -83,13 +83,13 @@ public class GameRendererMixin
     Matrix4f render4fTranslate()
     {
         Window window = Minecraft.getInstance().getWindow();
-        return new Matrix4f()
-                .ortho(0.0f,
+        return Matrix4f
+                .orthographic(0.0f,
                         (float) ((double) window.getWidth() / window.getGuiScale()),
-                        (float) ((double) window.getHeight() / window.getGuiScale()),
                         0.0f,
+                        (float) ((double) window.getHeight() / window.getGuiScale()),
                         1000.0f,
-                        ScreenLayerManager.getFarPlane(),
-                        FabricLoader.getInstance().isModLoaded("vulkanmod")); // GL needs false, Vulkan needs true. If mod is loaded, supply true.
+                        ScreenLayerManager.getFarPlane());
+                        // FabricLoader.getInstance().isModLoaded("vulkanmod")); // GL needs false, Vulkan needs true. If mod is loaded, supply true.
     }
 }
