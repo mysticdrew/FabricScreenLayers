@@ -3,9 +3,11 @@ package fabricscreenlayers.mixin.client;
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexSorting;
 import fabricscreenlayers.ScreenLayerManager;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
 import org.joml.Matrix4f;
 import org.spongepowered.asm.mixin.Mixin;
@@ -20,14 +22,14 @@ import static fabricscreenlayers.ScreenLayerManager.SCREENS;
 @Mixin(GameRenderer.class)
 public class GameRendererMixin
 {
-    private PoseStack stack;
+    private GuiGraphics graphics;
 
     @Redirect(method = "render",
             at = @At(value = "INVOKE",
-                    target = "Lcom/mojang/blaze3d/systems/RenderSystem;setProjectionMatrix(Lorg/joml/Matrix4f;)V"))
-    public void fabricscreenlayers_render4f(Matrix4f matrix4f)
+                    target = "Lcom/mojang/blaze3d/systems/RenderSystem;setProjectionMatrix(Lorg/joml/Matrix4f;Lcom/mojang/blaze3d/vertex/VertexSorting;)V"))
+    public void fabricscreenlayers_render4f(Matrix4f matrix4f, VertexSorting sorting)
     {
-        RenderSystem.setProjectionMatrix(render4fTranslate());
+        RenderSystem.setProjectionMatrix(render4fTranslate(), sorting);
     }
 
     @Redirect(method = "render",
@@ -40,24 +42,23 @@ public class GameRendererMixin
 
     @ModifyVariable(method = "render",
             at = @At(value = "INVOKE",
-                    target = "Lnet/minecraft/client/gui/screens/Screen;renderWithTooltip(Lcom/mojang/blaze3d/vertex/PoseStack;IIF)V",
-                    shift = At.Shift.BEFORE),
-            ordinal = 1)
-    public PoseStack fabricscreenlayers_renderDrawScreenPre(PoseStack poseStack)
+                    target = "Lnet/minecraft/client/gui/screens/Screen;renderWithTooltip(Lnet/minecraft/client/gui/GuiGraphics;IIF)V",
+                    shift = At.Shift.BEFORE))
+    public GuiGraphics fabricscreenlayers_renderDrawScreenPre(GuiGraphics graphics)
     {
 
-        this.stack = poseStack;
-        drawScreen(stack);
-        return stack;
+        this.graphics = graphics;
+        drawScreen(graphics);
+        return graphics;
     }
 
     @Inject(method = "render",
             at = @At(value = "INVOKE",
-                    target = "Lnet/minecraft/client/gui/screens/Screen;renderWithTooltip(Lcom/mojang/blaze3d/vertex/PoseStack;IIF)V",
+                    target = "Lnet/minecraft/client/gui/screens/Screen;renderWithTooltip(Lnet/minecraft/client/gui/GuiGraphics;IIF)V",
                     shift = At.Shift.AFTER))
     public void fabricscreenlayers_renderDrawScreenPost(float f, long l, boolean bl, CallbackInfo ci)
     {
-        drawScreenPost(this.stack);
+        drawScreenPost(this.graphics.pose());
     }
 
     void renderTranslate(PoseStack poseStack)
@@ -65,13 +66,13 @@ public class GameRendererMixin
         poseStack.translate(0.0, 0.0, 1000.0 - ScreenLayerManager.getFarPlane());
     }
 
-    void drawScreen(PoseStack poseStack)
+    void drawScreen(GuiGraphics graphics)
     {
         float partialTick = Minecraft.getInstance().getDeltaFrameTime();
-        poseStack.pushPose();
+        graphics.pose().pushPose();
         SCREENS.forEach(layer -> {
-            layer.render(poseStack, 0x7fffffff, 0x7fffffff, partialTick);
-            poseStack.translate(0, 0, 2000);
+            layer.render(graphics, 0x7fffffff, 0x7fffffff, partialTick);
+            graphics.pose().translate(0, 0, 2000);
         });
     }
 

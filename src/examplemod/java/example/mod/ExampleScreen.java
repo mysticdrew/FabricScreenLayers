@@ -7,10 +7,12 @@ import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
+import com.mojang.blaze3d.vertex.VertexSorting;
 import fabricscreenlayers.ScreenLayerManager;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
@@ -61,31 +63,31 @@ public class ExampleScreen extends Screen
     }
 
     @Override
-    public void render(PoseStack poseStack, int x, int y, float partialTicks)
+    public void render(GuiGraphics graphics, int x, int y, float partialTicks)
     {
         KeyMapping.releaseAll();
-        super.renderBackground(poseStack);
+        super.renderBackground(graphics);
         int xLoc = screenNumber == 0 ? 40 : 40 * screenNumber;
 
         // calling size display here prevents the label and box from being affected by minecraft's gui scale video setting
         sizeDisplay(minecraft.getWindow().getScreenWidth(), minecraft.getWindow().getScreenHeight());
-        drawLabel(poseStack, screenNumberLabel, xLoc, 0, 5);
+        drawLabel(graphics, screenNumberLabel, xLoc, 0, 5);
         sizeDisplay(width, height);
 
         if (this.screenNumber == ScreenLayerManager.getScreenLayerCount() || ScreenLayerManager.getScreenLayerCount() == 0)
         {
-            super.render(poseStack, x, y, partialTicks);
+            super.render(graphics, x, y, partialTicks);
         }
     }
 
-    public static void drawLabel(PoseStack poseStack, final String text, double x, double y, double fontScale)
+    public static void drawLabel(GuiGraphics graphics, final String text, double x, double y, double fontScale)
     {
 
         final Font fontRenderer = Minecraft.getInstance().font;
 
         final double width = fontRenderer.width(text);
         int height = fontRenderer.lineHeight + (fontRenderer.isBidirectional() ? 0 : 6);
-        poseStack.pushPose();
+        graphics.pose().pushPose();
 
         try
         {
@@ -93,7 +95,7 @@ public class ExampleScreen extends Screen
             {
                 x = x / fontScale;
                 y = y / fontScale;
-                poseStack.scale((float) fontScale, (float) fontScale, 1);
+                graphics.pose().scale((float) fontScale, (float) fontScale, 1);
             }
 
             float textX = (float) x;
@@ -107,24 +109,24 @@ public class ExampleScreen extends Screen
             rectY = y;
             textY = (float) (rectY + (height - fontRenderer.lineHeight) / 2.0);
             // Draw background
-            drawRectangle(poseStack, (float) (rectX - 2 - .5), (float) rectY, (float) ((float) (width + (2 * 2))), height);
+            drawRectangle(graphics, (float) (rectX - 2 - .5), (float) rectY, (float) ((float) (width + (2 * 2))), height);
             // Font renderer really doesn't like mid-pixel text rendering
-            poseStack.translate(textX - Math.floor(textX), textY - Math.floor(textY), 0);
-            fontRenderer.drawShadow(poseStack, text, textX, textY, 0xFFFFFF);
+            graphics.pose().translate(textX - Math.floor(textX), textY - Math.floor(textY), 0);
+            fontRenderer.drawInBatch(text, textX, textY, 0xFFFFFF, true, graphics.pose().last().pose(), graphics.bufferSource(), Font.DisplayMode.NORMAL, 0, 15728880);
         }
         finally
         {
-            poseStack.popPose();
+            graphics.pose().popPose();
         }
     }
 
-    public static void drawRectangle(PoseStack poseStack, float x, float y, float width, double height)
+    public static void drawRectangle(GuiGraphics graphics, float x, float y, float width, double height)
     {
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         BufferBuilder bufferBuilder = Tesselator.getInstance().getBuilder();
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
-        Matrix4f matrix4f = poseStack.last().pose();
+        Matrix4f matrix4f = graphics.pose().last().pose();
         bufferBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
         bufferBuilder.vertex(matrix4f, x, (float) height + y, (float) 0).color(0xFF000000).endVertex();
         bufferBuilder.vertex(matrix4f, x + width, (float) (height + y), (float) 0).color(0xFF000000).endVertex();
@@ -142,7 +144,7 @@ public class ExampleScreen extends Screen
         {
             RenderSystem.clear(GL_DEPTH_BUFFER_BIT, Minecraft.ON_OSX);
             Matrix4f matrix4f = new Matrix4f().setOrtho(0.0F, (float) width, (float) height, 0.0F, 100.0F, ScreenLayerManager.getFarPlane());
-            RenderSystem.setProjectionMatrix(matrix4f);
+            RenderSystem.setProjectionMatrix(matrix4f, VertexSorting.ORTHOGRAPHIC_Z);
             PoseStack posestack = RenderSystem.getModelViewStack();
             posestack.setIdentity();
             posestack.translate(0.0D, 0.0D, 1000.0F - ScreenLayerManager.getFarPlane());
