@@ -29,7 +29,8 @@ public class GameRendererMixin
                     target = "Lcom/mojang/blaze3d/systems/RenderSystem;setProjectionMatrix(Lorg/joml/Matrix4f;Lcom/mojang/blaze3d/vertex/VertexSorting;)V"))
     public void fabricscreenlayers_render4f(Matrix4f matrix4f, VertexSorting sorting)
     {
-        RenderSystem.setProjectionMatrix(render4fTranslate(), sorting);
+        matrix4f = render4fTranslate();
+        RenderSystem.setProjectionMatrix(matrix4f, sorting);
     }
 
     @Redirect(method = "render",

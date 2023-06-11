@@ -70,7 +70,7 @@ public class ScreenLayerManager
      */
     public static float getFarPlane()
     {
-        return 3000.0F * (1 + getScreenLayerCount());
+        return 1000.0F + 10000.0F * (1 + getScreenLayerCount());
     }
 
 
