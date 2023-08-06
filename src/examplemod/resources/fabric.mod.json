@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "examplemod",
-  "version": "1.0.0+1.19.3",
+  "version": "1.0.0+1.19.2",
 
   "name": "Fabric Screen Layers Example",
   "description": "Example for Fabric Screen Layers",
