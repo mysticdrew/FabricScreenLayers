@@ -141,7 +141,7 @@ curseforge {
 
         mainArtifact(remapJar) {
             displayName = "${archivesBaseName}-${version}"
-            changelog = file("$project.buildDir/doc/changelog.html")
+            changelog = file("$rootDir/build/doc/changelog.html")
         }
         afterEvaluate {
             uploadTask.dependsOn(remapJar)
