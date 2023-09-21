@@ -22,8 +22,8 @@ jobs:
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
 
-      - name: Gradle Build
-        run: /bin/sh ./gradlew build
+#      - name: Gradle Build
+#        run: /bin/sh ./gradlew build
 
       - name: Gradle Build
         run: /bin/sh ./gradlew curseforge -Pcurseforge_api_key=${{ secrets.CURSEFORGE_KEY }}
