@@ -2,8 +2,8 @@ name: publish-curseforge
 
 on:
   push:
-#    tags:
-#      - '*'
+    tags:
+      - '*'
 
 jobs:
   build:
@@ -25,10 +25,5 @@ jobs:
       - name: Gradle Build
         run: /bin/sh ./gradlew build
 
-      - name: Test
-        shell: bash
-        run: |
-          ls ./build
-
-#      - name: Gradle Build
-#        run: /bin/sh ./gradlew curseforge -Pcurseforge_api_key=${{ secrets.CURSEFORGE_KEY }}
+      - name: Gradle Build
+        run: /bin/sh ./gradlew curseforge -Pcurseforge_api_key=${{ secrets.CURSEFORGE_KEY }}

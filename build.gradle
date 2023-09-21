@@ -151,7 +151,6 @@ curseforge {
 
 tasks.modrinth.dependsOn(tasks.build)
 tasks.modrinth.mustRunAfter(tasks.processDocs)
-tasks.curseforge.mustRunAfter(tasks.processDocs)
 
 modrinth {
     token = "${modrinthApiKey}"

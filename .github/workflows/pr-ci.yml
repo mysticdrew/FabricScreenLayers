@@ -3,19 +3,24 @@ name: pr-ci
 on:
   push:
 
-#jobs:
-#  build:
-#    runs-on: ubuntu-latest
-#
-#    steps:
-#      - uses: actions/checkout@v3
-#
-#      - name: Set up Java
-#        uses: actions/setup-java@v3
-#        with:
-#          java-version: 17
-#          distribution: temurin
-#          cache: gradle
-#
-#      - name: Gradle Build
-#        run: /bin/sh ./gradlew build
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: 17
+          distribution: temurin
+          cache: gradle
+
+      - name: Gradle Build
+        run: /bin/sh ./gradlew build
+
+      - name: Test
+        shell: bash
+        run: |
+          ls ./build
