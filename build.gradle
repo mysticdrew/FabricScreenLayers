@@ -121,9 +121,12 @@ task processDocs(type: Copy) {
     into 'build/doc'
 }
 
-// Automated upload to CurseForge for the win!
+
 if (!project.hasProperty("curseForgeApiKey")) {
-    ext.curseForgeApiKey = "notset"
+    ext.curseForgeApiKey = project.findProperty("curseforge_api_key") ?: "notset"
+}
+if (!project.hasProperty("modrinthApiKey")) {
+    ext.modrinthApiKey =  project.findProperty("modrinth_api_key") ?: "notset"
 }
 
 curseforge {
@@ -147,15 +150,6 @@ curseforge {
 }
 
 tasks.modrinth.dependsOn(tasks.build)
-
-// Automated upload to CurseForge for the win!
-if (!project.hasProperty("curseForgeApiKey")) {
-    ext.curseForgeApiKey = project.findProperty("curseforge_api_key") ?: "notset"
-}
-if (!project.hasProperty("modrinthApiKey")) {
-    ext.modrinthApiKey =  project.findProperty("modrinth_api_key") ?: "notset"
-}
-
 
 modrinth {
     token = "${modrinthApiKey}"
