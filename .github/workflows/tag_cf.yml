@@ -22,8 +22,9 @@ jobs:
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
 
-#      - name: Gradle Build
-#        run: /bin/sh ./gradlew build
+      - name: Gradle Build
+        run: /bin/sh ./gradlew build
+
       - name: TEst
         shell: bash
         run: |
