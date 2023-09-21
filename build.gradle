@@ -111,7 +111,7 @@ loom {
 
 task processDocs(type: Copy) {
     // update docs
-    from(file("/doc/")) {
+    from(file("$rootDir/doc/")) {
         include '*.html'
         expand 'version': project.mod_version,
                 'date': getDate(),
