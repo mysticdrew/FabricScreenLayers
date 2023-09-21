@@ -138,7 +138,7 @@ task publishCurseForge(type: net.darkhax.curseforgegradle.TaskPublishCurseForge)
     mainFile.displayName = "${archivesBaseName}-${version}"
     mainFile.releaseType = release_type
     mainFile.addModLoader('Fabric', 'Quilt')
-        mainFile.addGameVersion("1.20.3-Snapshot")
+    mainFile.addGameVersion(project.minecraft_version)
 
     mainFile.changelogType = 'html'
     mainFile.changelog = file("$project.buildDir/doc/changelog.html")
