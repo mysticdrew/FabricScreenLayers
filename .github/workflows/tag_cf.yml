@@ -24,6 +24,10 @@ jobs:
 
 #      - name: Gradle Build
 #        run: /bin/sh ./gradlew build
+      - name: TEst
+        shell: powershell
+        run: ls
+          #        run: /bin/sh ./gradlew build
 
-      - name: Gradle Build
-        run: /bin/sh ./gradlew curseforge -Pcurseforge_api_key=${{ secrets.CURSEFORGE_KEY }}
+#      - name: Gradle Build
+#        run: /bin/sh ./gradlew curseforge -Pcurseforge_api_key=${{ secrets.CURSEFORGE_KEY }}
