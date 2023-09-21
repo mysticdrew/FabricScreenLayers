@@ -148,6 +148,15 @@ curseforge {
 
 tasks.modrinth.dependsOn(tasks.build)
 
+// Automated upload to CurseForge for the win!
+if (!project.hasProperty("curseForgeApiKey")) {
+    ext.curseForgeApiKey = project.findProperty("curseforge_api_key") ?: "notset"
+}
+if (!project.hasProperty("modrinthApiKey")) {
+    ext.modrinthApiKey =  project.findProperty("modrinth_api_key") ?: "notset"
+}
+
+
 modrinth {
     token = "${modrinthApiKey}"
     projectId = "7DOLIJdi"
