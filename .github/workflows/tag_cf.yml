@@ -28,7 +28,7 @@ jobs:
       - name: TEst
         shell: bash
         run: |
-          ls
+          ls ./build
 
-#      - name: Gradle Build
-#        run: /bin/sh ./gradlew curseforge -Pcurseforge_api_key=${{ secrets.CURSEFORGE_KEY }}
+      - name: Gradle Build
+        run: /bin/sh ./gradlew curseforge -Pcurseforge_api_key=${{ secrets.CURSEFORGE_KEY }}
