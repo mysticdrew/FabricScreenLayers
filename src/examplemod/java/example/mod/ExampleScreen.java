@@ -66,7 +66,7 @@ public class ExampleScreen extends Screen
     public void render(GuiGraphics graphics, int x, int y, float partialTicks)
     {
         KeyMapping.releaseAll();
-        super.renderBackground(graphics);
+        super.renderBackground(graphics, x, y, partialTicks);
         int xLoc = screenNumber == 0 ? 40 : 40 * screenNumber;
 
         // calling size display here prevents the label and box from being affected by minecraft's gui scale video setting
