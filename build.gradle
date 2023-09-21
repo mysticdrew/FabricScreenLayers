@@ -141,7 +141,7 @@ curseforge {
 
         mainArtifact(remapJar) {
             displayName = "${archivesBaseName}-${version}"
-            changelog = file('/build/doc/changelog.html')
+            changelog = file("$project.buildDir/doc/changelog.html")
         }
         afterEvaluate {
             uploadTask.dependsOn(remapJar)
@@ -160,7 +160,7 @@ modrinth {
     uploadFile = remapJar
     gameVersions = ["${project.minecraft_version}"]
     loaders = ["fabric", "quilt"]
-    changelog = file('/build/doc/changelog.html').exists() ? file('/build/doc/changelog.html').text : null
+    changelog = file("$rootDir/build/doc/changelog.html").exists() ? file("$rootDir/build/doc/changelog.html").text : null
 }
 
 // Ensure build is done prior to cursegradle tasks
