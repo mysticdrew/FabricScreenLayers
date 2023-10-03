@@ -113,6 +113,8 @@ public class ExampleScreen extends Screen
             // Font renderer really doesn't like mid-pixel text rendering
             graphics.pose().translate(textX - Math.floor(textX), textY - Math.floor(textY), 0);
             fontRenderer.drawInBatch(text, textX, textY, 0xFFFFFF, true, graphics.pose().last().pose(), graphics.bufferSource(), Font.DisplayMode.NORMAL, 0, 15728880);
+            graphics.drawString(fontRenderer, text, (int) textX, (int) textY, 15728880, true);
+
         }
         finally
         {
@@ -136,6 +138,12 @@ public class ExampleScreen extends Screen
         BufferUploader.drawWithShader(bufferBuilder.end());
         RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
         RenderSystem.disableBlend();
+    }
+
+    @Override
+    public void renderTransparentBackground(GuiGraphics graphics)
+    {
+        graphics.fillGradient(0, 0, this.width, this.height, 0x3D353838, 0x3D353838);
     }
 
     public void sizeDisplay(double width, double height)
