@@ -14,7 +14,7 @@ buildscript {
 
 plugins {
     id 'fabric-loom' version '1.2-SNAPSHOT'
-    id 'com.matthewprenger.cursegradle' version '1.4.0'
+    id 'net.darkhax.curseforgegradle' version '1.+'
 }
 
 apply plugin: "com.modrinth.minotaur"
@@ -126,27 +126,22 @@ if (!project.hasProperty("curseForgeApiKey")) {
     ext.curseForgeApiKey = project.findProperty("curseforge_api_key") ?: "notset"
 }
 if (!project.hasProperty("modrinthApiKey")) {
-    ext.modrinthApiKey =  project.findProperty("modrinth_api_key") ?: "notset"
+    ext.modrinthApiKey = project.findProperty("modrinth_api_key") ?: "notset"
 }
 
-curseforge {
-    project {
-        id = '777581'
-        apiKey = "${curseForgeApiKey}"
-        changelogType = 'html'
-        releaseType = release_type
-        addGameVersion project.minecraft_version
-        addGameVersion 'Fabric'
-        addGameVersion 'Quilt'
 
-        mainArtifact(remapJar) {
-            displayName = "${archivesBaseName}-${version}"
-            changelog = file("$project.buildDir/doc/changelog.html")
-        }
-        afterEvaluate {
-            uploadTask.dependsOn(remapJar)
-        }
-    }
+task publishCurseForge(type: net.darkhax.curseforgegradle.TaskPublishCurseForge) {
+
+    apiToken = "${curseForgeApiKey}"
+
+    def mainFile = upload('777581', remapJar)
+    mainFile.displayName = "${archivesBaseName}-${version}"
+    mainFile.releaseType = release_type
+    mainFile.addModLoader('Fabric', 'Quilt')
+        mainFile.addGameVersion("1.20.3-Snapshot")
+
+    mainFile.changelogType = 'html'
+    mainFile.changelog = file("$project.buildDir/doc/changelog.html")
 }
 
 tasks.modrinth.dependsOn(tasks.build)
