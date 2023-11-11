@@ -13,7 +13,9 @@ public class ScreenMixin
     @Inject(method = "onClose", at = @At("HEAD"), cancellable = true)
     public void fabricscreenlayers_onClose(CallbackInfo info)
     {
-        ScreenLayerManager.popLayer();
-        info.cancel();
+        if (ScreenLayerManager.popLayer())
+        {
+            info.cancel();
+        }
     }
 }

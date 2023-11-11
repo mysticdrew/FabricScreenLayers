@@ -38,7 +38,7 @@ public class ScreenLayerManager
     public static void clearLayers()
     {
         Minecraft minecraft = Minecraft.getInstance();
-        while (SCREENS.size() > 0)
+        while (!SCREENS.isEmpty())
         {
             popLayer(minecraft);
         }
@@ -47,20 +47,22 @@ public class ScreenLayerManager
     /**
      * Removes the top most screen.
      */
-    public static void popLayer()
+    public static boolean popLayer()
     {
         Minecraft minecraft = Minecraft.getInstance();
-        if (SCREENS.size() == 0)
+        if (SCREENS.isEmpty())
         {
             minecraft.setScreen(null);
-            return;
+            return false;
         }
 
         popLayer(minecraft);
         if (minecraft.screen != null)
         {
             minecraft.getNarrator().sayNow(minecraft.screen.getNarrationMessage());
+            return true;
         }
+        return false;
     }
 
     /**
