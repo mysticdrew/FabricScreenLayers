@@ -2,6 +2,7 @@ package fabricscreenlayers;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.util.Objects;
 import java.util.Stack;
@@ -47,7 +48,15 @@ public class ScreenLayerManager
     /**
      * Removes the top most screen.
      */
-    public static boolean popLayer()
+    public static void popLayer()
+    {
+        ScreenLayerManager.popLayerInternal();
+    }
+
+    // DO NOT USE
+    @Deprecated
+    @ApiStatus.Internal
+    public static boolean popLayerInternal()
     {
         Minecraft minecraft = Minecraft.getInstance();
         if (SCREENS.isEmpty())
